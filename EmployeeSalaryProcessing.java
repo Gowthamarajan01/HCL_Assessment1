@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 abstract class Employee {
@@ -18,35 +17,35 @@ abstract class Employee {
         return employeeName;
     }
 
-    abstract double calculateSalary();
+    public abstract double calculateSalary();
 }
 
 class FullTimeEmployee extends Employee {
-    double monthlySalary;
+    private double monthlySalary;
 
-    FullTimeEmployee(int id, String name, double salary) {
+    FullTimeEmployee(int id, String name, double monthlySalary) {
         super(id, name);
-        this.monthlySalary = salary;
+        this.monthlySalary = monthlySalary;
     }
 
     @Override
-    double calculateSalary() {
+    public double calculateSalary() {
         return monthlySalary;
     }
 }
 
 class ContractEmployee extends Employee {
-    int workingDays;
-    double dailyRate;
+    private int workingDays;
+    private double dailyRate;
 
-    ContractEmployee(int id, String name, int days, double rate) {
+    ContractEmployee(int id, String name, int workingDays, double dailyRate) {
         super(id, name);
-        this.workingDays = days;
-        this.dailyRate = rate;
+        this.workingDays = workingDays;
+        this.dailyRate = dailyRate;
     }
 
     @Override
-    double calculateSalary() {
+    public double calculateSalary() {
         return workingDays * dailyRate;
     }
 }
@@ -56,20 +55,24 @@ public class EmployeeSalaryProcessing {
         Scanner sc = new Scanner(System.in);
 
         int employeeType = sc.nextInt();
-        int id = sc.nextInt();
-        String name = sc.next();
+        int employeeId = sc.nextInt();
+        String employeeName = sc.next();
 
-        Employee emp;
-
+        Employee employee;
         if (employeeType == 1) {
-            double salary = sc.nextDouble();
-            emp = new FullTimeEmployee(id, name, salary);
+            double monthlySalary = sc.nextDouble();
+            employee = new FullTimeEmployee(employeeId, employeeName, monthlySalary);
         } else {
-            int days = sc.nextInt();
-            double rate = sc.nextDouble();
-            emp = new ContractEmployee(id, name, days, rate);
+            int workingDays = sc.nextInt();
+            double dailyRate = sc.nextDouble();
+            employee = new ContractEmployee(employeeId, employeeName, workingDays, dailyRate);
         }
 
-        System.out.println("Employee ID: " + emp.getEmployeeId());
-        System.out.println("Employee Name: " + emp.getEmployeeName());
-        System.out.printf("Salary: %.2f%n
+        System.out.println("Employee ID: " + employee.getEmployeeId());
+        System.out.println("Employee Name: " + employee.getEmployeeName());
+        System.out.printf("Salary: %.2f%n", employee.calculateSalary());
+
+        sc.close();
+    }
+}
+
